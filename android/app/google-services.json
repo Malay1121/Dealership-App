@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "943011554533",
+    "project_id": "dealership-3caaa",
+    "storage_bucket": "dealership-3caaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943011554533:android:50f6d0c2c3d5fe07b5600c",
+        "android_client_info": {
+          "package_name": "com.example.dealership"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943011554533-49f5l7e7gii83jmdjgmbonuukqm7e9l2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dealership",
+            "certificate_hash": "02538837dec6d9dd003ce710ecf3e6b48118fcfb"
+          }
+        },
+        {
+          "client_id": "943011554533-dic806nejcbonst72a02q9sf3367m316.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOPxVD2qMnoWlFe0jnxUk5_WYSjUwj1MQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943011554533-dic806nejcbonst72a02q9sf3367m316.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
