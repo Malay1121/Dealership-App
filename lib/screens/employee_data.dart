@@ -100,13 +100,14 @@ class _EmployeDataState extends State<EmployeData> {
                   if (!snapshots.hasData) {
                     return Text('loading...');
                   } else {
+                    print("Snapshot data --> ${(snapshots.data!.docs[0] as DocumentSnapshot).get("uid")}");
                     return SizedBox(
                       height: _mediaQuery.height / 1.4,
                       width: _mediaQuery.width,
                       child: ListView.builder(
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          DocumentSnapshot doc = snapshots.data!.docs[index];
+                          DocumentSnapshot doc = snapshots.data!.docs[0];
                           for (var item in employeeList.first)
                             employeeList.add(
                               <String>[
@@ -122,7 +123,7 @@ class _EmployeDataState extends State<EmployeData> {
                             ),
                             columnSpacing: 1,
                             horizontalMargin: 12,
-                            minWidth: _mediaQuery.width*((snapshots.data!.docs.length)*1.8),
+                            minWidth: _mediaQuery.width*((employeeList.first.length) * 0.35),
                             columns: [
                               for (var item in employeeList.first)
                                 DataColumn2(
@@ -132,15 +133,16 @@ class _EmployeDataState extends State<EmployeData> {
                             ],
                             rows: List<DataRow>.generate(
                               snapshots.data!.docs.length,
-                              (index) {
+                              (index1) {
+                                var docsKeys = (snapshots.data!.docs[index1].data() as Map<String,dynamic>).keys;
                                 return DataRow(
                                   cells: [
                                     for (var item in employeeList.first)
                                       DataCell(
                                         Text(
-                                          doc.get(item) == null
-                                              ? index.toString()
-                                              : doc.get(item).toString(),
+                                          !docsKeys.contains(item)
+                                              ? "None"
+                                              : snapshots.data!.docs[index1].get(item).toString(),
                                         ),
                                       ),
                                   ],
