@@ -48,32 +48,32 @@ class _EmployeDataState extends State<EmployeData> {
               top: _mediaQuery.height / 20, left: _mediaQuery.width / 30),
           child: Column(
             children: [
-              SizedBox(
-                height: _mediaQuery.height / 10,
-                width: _mediaQuery.width - 1,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    for (var item in employeeList.first)
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: _mediaQuery.width / 39,
-                          right: _mediaQuery.width / 39,
-                        ),
-                        child: SizedBox(
-                          width: _mediaQuery.width / 7,
-                          child: Text(
-                            item,
-                            style: TextStyle(
-                              overflow: TextOverflow.clip,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+              // SizedBox(
+              //   height: _mediaQuery.height / 10,
+              //   width: _mediaQuery.width - 1,
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: [
+              //       for (var item in employeeList.first)
+              //         Padding(
+              //           padding: EdgeInsets.only(
+              //             left: _mediaQuery.width / 39,
+              //             right: _mediaQuery.width / 39,
+              //           ),
+              //           child: SizedBox(
+              //             width: _mediaQuery.width / 7,
+              //             child: Text(
+              //               item,
+              //               style: TextStyle(
+              //                 overflow: TextOverflow.clip,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //     ],
+              //   ),
+              // ),
               StreamBuilder<QuerySnapshot>(
                 stream: widget.collection == 'users'
                     ? db
@@ -102,6 +102,7 @@ class _EmployeDataState extends State<EmployeData> {
                   } else {
                     return SizedBox(
                       height: _mediaQuery.height / 1.4,
+                      width: _mediaQuery.width,
                       child: ListView.builder(
                         itemCount: 1,
                         itemBuilder: (context, index) {
@@ -115,17 +116,17 @@ class _EmployeDataState extends State<EmployeData> {
                           return DataTable2(
                             headingRowHeight: _mediaQuery.height / 17,
                             headingTextStyle: TextStyle(
-                              overflow: TextOverflow.clip,
+                              overflow: TextOverflow.visible,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
-                            columnSpacing: 12,
+                            columnSpacing: 1,
                             horizontalMargin: 12,
-                            minWidth: employeeList.length * 1.4,
+                            minWidth: _mediaQuery.width*((snapshots.data!.docs.length)*1.8),
                             columns: [
                               for (var item in employeeList.first)
                                 DataColumn2(
-                                  label: Text(item),
+                                  label: Text(item.toUpperCase()),
                                   size: ColumnSize.L,
                                 ),
                             ],
