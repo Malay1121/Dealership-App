@@ -7,9 +7,8 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:editable/editable.dart';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:universal_html/html.dart' as html;
@@ -101,56 +100,10 @@ class _EmployeDataState extends State<EmployeData> {
                   if (!snapshots.hasData) {
                     return Text('loading...');
                   } else {
-                    return
-                        // SizedBox(
-                        //   height: _mediaQuery.height / 1.4,
-                        //   child: ListView.builder(
-                        //       itemCount: 1,
-                        //       itemBuilder: (context, index) {
-                        //         DocumentSnapshot doc = snapshots.data!.docs[index];
-                        //         for (var item in employeeList.first)
-                        //           employeeList.add(
-                        //             <String>[
-                        //               doc.get(item.toString()).toString(),
-                        //             ],
-                        //           );
-                        //         return DataTable2(
-                        //             headingRowHeight: _mediaQuery.height / 17,
-                        //             headingTextStyle: TextStyle(
-                        //               overflow: TextOverflow.clip,
-                        //               fontWeight: FontWeight.bold,
-                        //               color: Colors.black,
-                        //             ),
-                        //             columnSpacing: 12,
-                        //             horizontalMargin: 12,
-                        //             minWidth: 1600,
-                        //             columns: [
-                        //               for (var item in employeeList.first)
-                        //                 DataColumn2(
-                        //                   label: Text(item),
-                        //                   size: ColumnSize.L,
-                        //                 ),
-                        //             ],
-                        //             rows: List<DataRow>.generate(
-                        //               snapshots.data!.docs.length,
-                        //               (index) {
-                        //                 return DataRow(
-                        //                   cells: [
-                        //                     for (var item in employeeList.first)
-                        //                       DataCell(Text(doc.get(item) == null
-                        //                           ? ''
-                        //                           : doc.get(item).toString())),
-                        //                   ],
-                        //                 );
-                        //               },
-                        //             ));
-                        //       }),
-                        // );
-
-                        SizedBox(
+                    return SizedBox(
                       height: _mediaQuery.height / 1.4,
                       child: ListView.builder(
-                        itemCount: snapshots.data!.docs.length,
+                        itemCount: 1,
                         itemBuilder: (context, index) {
                           DocumentSnapshot doc = snapshots.data!.docs[index];
                           for (var item in employeeList.first)
@@ -159,35 +112,86 @@ class _EmployeDataState extends State<EmployeData> {
                                 doc.get(item.toString()).toString(),
                               ],
                             );
-
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                for (var item in employeeList.first)
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: _mediaQuery.width / 39,
-                                      right: _mediaQuery.width / 39,
-                                    ),
-                                    child: SizedBox(
-                                      width: _mediaQuery.width / 7,
-                                      child: Text(
-                                        doc.get(item) == null
-                                            ? ''
-                                            : doc.get(item).toString(),
-                                        style: TextStyle(
-                                          overflow: TextOverflow.clip,
+                          return DataTable2(
+                            headingRowHeight: _mediaQuery.height / 17,
+                            headingTextStyle: TextStyle(
+                              overflow: TextOverflow.clip,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                            columnSpacing: 12,
+                            horizontalMargin: 12,
+                            minWidth: employeeList.length * 1.4,
+                            columns: [
+                              for (var item in employeeList.first)
+                                DataColumn2(
+                                  label: Text(item),
+                                  size: ColumnSize.L,
+                                ),
+                            ],
+                            rows: List<DataRow>.generate(
+                              snapshots.data!.docs.length,
+                              (index) {
+                                return DataRow(
+                                  cells: [
+                                    for (var item in employeeList.first)
+                                      DataCell(
+                                        Text(
+                                          doc.get(item) == null
+                                              ? index.toString()
+                                              : doc.get(item).toString(),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                              ],
+                                  ],
+                                );
+                              },
                             ),
                           );
                         },
                       ),
                     );
+
+                    //     SizedBox(
+                    //   height: _mediaQuery.height / 1.4,
+                    //   child: ListView.builder(
+                    //     itemCount: snapshots.data!.docs.length,
+                    //     itemBuilder: (context, index) {
+                    //       DocumentSnapshot doc = snapshots.data!.docs[index];
+                    //       for (var item in employeeList.first)
+                    //         employeeList.add(
+                    //           <String>[
+                    //             doc.get(item.toString()).toString(),
+                    //           ],
+                    //         );
+
+                    //       return SingleChildScrollView(
+                    //         scrollDirection: Axis.horizontal,
+                    //         child: Row(
+                    //           children: [
+                    //             for (var item in employeeList.first)
+                    //               Padding(
+                    //                 padding: EdgeInsets.only(
+                    //                   left: _mediaQuery.width / 39,
+                    //                   right: _mediaQuery.width / 39,
+                    //                 ),
+                    //                 child: SizedBox(
+                    //                   width: _mediaQuery.width / 7,
+                    //                   child: Text(
+                    //                     doc.get(item) == null
+                    //                         ? ''
+                    //                         : doc.get(item).toString(),
+                    //                     style: TextStyle(
+                    //                       overflow: TextOverflow.clip,
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //           ],
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // );
                   }
                 },
               ),
@@ -232,7 +236,8 @@ class _EmployeDataState extends State<EmployeData> {
     String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(now);
 
     if (Platform.isAndroid) {
-      if (await _requestPermission(Permission.storage)) {
+      if (await _requestPermission(Permission.storage) &&
+          await _requestPermission(Permission.manageExternalStorage)) {
         directory = await getExternalStorageDirectory();
         String newPath = '';
         List<String> folders = directory!.path.split('/');
