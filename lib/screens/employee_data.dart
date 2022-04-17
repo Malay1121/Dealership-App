@@ -108,22 +108,22 @@ class _EmployeDataState extends State<EmployeData> {
                         itemCount: 1,
                         itemBuilder: (context, index) {
                           DocumentSnapshot doc = snapshots.data!.docs[0];
-                          for (var item in employeeList.first)
-                            employeeList.add(
-                              <String>[
-                                doc.get(item.toString()).toString(),
-                              ],
-                            );
+                          // for (var item in employeeList.first)
+                          //   employeeList.add(
+                          //     <String>[
+                          //       doc.get(item.toString()).toString(),
+                          //     ],
+                          //   );
                           return DataTable2(
                             headingRowHeight: _mediaQuery.height / 17,
                             headingTextStyle: TextStyle(
-                              overflow: TextOverflow.visible,
+                              overflow: TextOverflow.ellipsis,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
                             columnSpacing: 1,
                             horizontalMargin: 12,
-                            minWidth: _mediaQuery.width*((employeeList.first.length) * 0.35),
+                            minWidth: _mediaQuery.width*(employeeList.first.length>11?(employeeList.first.length) * 0.45:(employeeList.first.length) * 0.37),
                             columns: [
                               for (var item in employeeList.first)
                                 DataColumn2(
