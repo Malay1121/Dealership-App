@@ -26,7 +26,6 @@ var _auth = FirebaseAuth.instance;
 class _GetStartedState extends State<GetStarted> {
   Future<void> shared() async {
     shared(BuildContext context) async {
-      await Permission.storage.request();
       var _sharedPreferences = await SharedPreferences.getInstance();
 
       await FirebaseFirestore.instance
