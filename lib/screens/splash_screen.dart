@@ -19,8 +19,10 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   Future<void> shared() async {
     shared(BuildContext context) async {
+
       await Permission.storage.request();
       await Permission.manageExternalStorage.request();
+      
       var _sharedPreferences = await SharedPreferences.getInstance();
 
       await FirebaseFirestore.instance
@@ -65,6 +67,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     shared();
   }
 

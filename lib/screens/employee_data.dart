@@ -30,13 +30,12 @@ class _EmployeDataState extends State<EmployeData> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    employeeList = [widget.list];
   }
 
   @override
   Widget build(BuildContext context) {
     var _mediaQuery = MediaQuery.of(context).size;
+    employeeList = [widget.list];
 
     return SafeArea(
       child: Scaffold(
@@ -79,11 +78,6 @@ class _EmployeDataState extends State<EmployeData> {
                         itemBuilder: (context, index) {
                           DocumentSnapshot doc = snapshots.data!.docs[index];
 
-                          employeeList.add(
-                            <String>[
-                              for (var itm in employeeList.first) doc.get(itm),
-                            ],
-                          );
                           return DataTable2(
                             headingRowHeight: _mediaQuery.height / 17,
                             headingTextStyle: TextStyle(
@@ -93,7 +87,10 @@ class _EmployeDataState extends State<EmployeData> {
                             ),
                             columnSpacing: 1,
                             horizontalMargin: 12,
-                            minWidth: _mediaQuery.width*(employeeList.first.length>11?(employeeList.first.length) * 0.45:(employeeList.first.length) * 0.37),
+                            minWidth: _mediaQuery.width *
+                                (employeeList.first.length > 11
+                                    ? (employeeList.first.length) * 0.45
+                                    : (employeeList.first.length) * 0.37),
                             columns: [
                               for (var item in employeeList.first)
                                 DataColumn2(
@@ -104,19 +101,22 @@ class _EmployeDataState extends State<EmployeData> {
                             rows: List<DataRow>.generate(
                               snapshots.data!.docs.length,
                               (index1) {
-                                var docsKeys = (snapshots.data!.docs[index1]
-                                        .data() as Map<String, dynamic>)
-                                    .keys;
+                                var docsKeys = (snapshots.data!.docs[index1].data() as Map<String, dynamic>).keys;
+                                employeeList.add(
+                                  [
+                                    for (var itm in employeeList.first)
+                                      !docsKeys.contains(itm)?"NA":"${snapshots.data!.docs[index1].get(itm)}" == "null" ?"":"${snapshots.data!.docs[index1].get(itm)}",
+                                  ]
+                                );
+
                                 return DataRow(
                                   cells: [
                                     for (var item in employeeList.first)
                                       DataCell(
                                         Text(
                                           !docsKeys.contains(item)
-                                              ? "None"
-                                              : snapshots.data!.docs[index1]
-                                                  .get(item)
-                                                  .toString(),
+                                              ? "NA"
+                                              : "${snapshots.data!.docs[index1].get(item)}" == "null" || "${snapshots.data!.docs[index1].get(item)}" == "" ?"NA":"${snapshots.data!.docs[index1].get(item)}",
                                         ),
                                       ),
                                   ],
@@ -133,7 +133,6 @@ class _EmployeDataState extends State<EmployeData> {
               GestureDetector(
                 onTap: () async {
                   await saveFile();
-                  print(employeeList);
                 },
                 child: Container(
                   height: _mediaQuery.height / 18,
@@ -164,6 +163,7 @@ class _EmployeDataState extends State<EmployeData> {
   bool loading = false;
 
   Future<bool> saveFile() async {
+    print("Employee List --> ${employeeList}");
     Directory? directory;
     final Dio dio = Dio();
     String csvData = ListToCsvConverter().convert(employeeList);
@@ -202,13 +202,13 @@ class _EmployeDataState extends State<EmployeData> {
     }
     if (await directory.exists()) {
       final File file =
-          await (File(directory.path + '/employee_export_$formattedDate.csv'))
+          await (File(directory.path + '/${widget.collection}_export_$formattedDate.csv'))
               .create();
 
       await file.writeAsString(csvData).then((value) => showSnackBar(
           context,
           'Find your export at ${directory!.path}' +
-              '/employee_export_$formattedDate.csv'));
+              '/${widget.collection}_export_$formattedDate.csv'));
     }
     return false;
   }
