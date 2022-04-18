@@ -55,6 +55,7 @@ dependencies:
   dio: ^4.0.6
   data_table_2: ^2.2.1
   editable: ^2.0.0
+  pdf: ^3.7.4
 
 dev_dependencies:
   flutter_test:
