@@ -101,13 +101,18 @@ class _EmployeDataState extends State<EmployeData> {
                             rows: List<DataRow>.generate(
                               snapshots.data!.docs.length,
                               (index1) {
-                                var docsKeys = (snapshots.data!.docs[index1].data() as Map<String, dynamic>).keys;
-                                employeeList.add(
-                                  [
-                                    for (var itm in employeeList.first)
-                                      !docsKeys.contains(itm)?"NA":"${snapshots.data!.docs[index1].get(itm)}" == "null" ?"":"${snapshots.data!.docs[index1].get(itm)}",
-                                  ]
-                                );
+                                var docsKeys = (snapshots.data!.docs[index1]
+                                        .data() as Map<String, dynamic>)
+                                    .keys;
+                                employeeList.add([
+                                  for (var itm in employeeList.first)
+                                    !docsKeys.contains(itm)
+                                        ? "NA"
+                                        : "${snapshots.data!.docs[index1].get(itm)}" ==
+                                                "null"
+                                            ? ""
+                                            : "${snapshots.data!.docs[index1].get(itm)}",
+                                ]);
 
                                 return DataRow(
                                   cells: [
@@ -116,7 +121,12 @@ class _EmployeDataState extends State<EmployeData> {
                                         Text(
                                           !docsKeys.contains(item)
                                               ? "NA"
-                                              : "${snapshots.data!.docs[index1].get(item)}" == "null" || "${snapshots.data!.docs[index1].get(item)}" == "" ?"NA":"${snapshots.data!.docs[index1].get(item)}",
+                                              : "${snapshots.data!.docs[index1].get(item)}" ==
+                                                          "null" ||
+                                                      "${snapshots.data!.docs[index1].get(item)}" ==
+                                                          ""
+                                                  ? "NA"
+                                                  : "${snapshots.data!.docs[index1].get(item)}",
                                         ),
                                       ),
                                   ],
@@ -201,9 +211,9 @@ class _EmployeDataState extends State<EmployeData> {
       await directory.create(recursive: true);
     }
     if (await directory.exists()) {
-      final File file =
-          await (File(directory.path + '/${widget.collection}_export_$formattedDate.csv'))
-              .create();
+      final File file = await (File(directory.path +
+              '/${widget.collection}_export_$formattedDate.csv'))
+          .create();
 
       await file.writeAsString(csvData).then((value) => showSnackBar(
           context,
