@@ -102,7 +102,6 @@ class _EmployeDataState extends State<EmployeData> {
                                 var docsKeys = (snapshots.data!.docs[index1]
                                         .data() as Map<String, dynamic>)
                                     .keys;
-
                                 employeeList.add([
                                   for (var itm in employeeList.first)
                                     !docsKeys.contains(itm)

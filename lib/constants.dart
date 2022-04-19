@@ -67,6 +67,8 @@ var date;
 var password;
 var otp;
 var uid;
+var aadharCardNumber;
+var panNumber;
 
 var rePassword;
 

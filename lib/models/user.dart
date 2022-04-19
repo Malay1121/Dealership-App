@@ -15,20 +15,23 @@ class UserModel {
   String? otp;
   String? uid;
   bool? employee;
+  String? panNumber;
+  String? aadharCardNumber;
 
-  UserModel({
-    this.name,
-    this.phone,
-    this.youAreA,
-    this.department,
-    this.role,
-    this.salary,
-    this.location,
-    this.date,
-    this.password,
-    this.uid,
-    this.employee,
-  });
+  UserModel(
+      {this.name,
+      this.phone,
+      this.youAreA,
+      this.department,
+      this.role,
+      this.salary,
+      this.location,
+      this.date,
+      this.password,
+      this.uid,
+      this.employee,
+      this.aadharCardNumber,
+      this.panNumber});
 
   factory UserModel.fromMap(map) {
     return UserModel(
@@ -43,6 +46,8 @@ class UserModel {
       password: map['password'],
       uid: map['uid'],
       employee: map['employee'],
+      aadharCardNumber: map['aadharCardNumber'],
+      panNumber: map['panNumber'],
     );
   }
 
@@ -59,6 +64,8 @@ class UserModel {
       'password': password,
       'uid': uid,
       'employee': employee,
+      'aadharCardNumber': aadharCardNumber,
+      'panNumber': panNumber,
     };
   }
 }
