@@ -168,7 +168,9 @@ class _HomePageState extends State<HomePage> {
                             'phone',
                             'role',
                             'salary',
-                            'uid'
+                            'uid',
+                            'aadharCardNumber',
+                            'panNumber',
                           ],
                           collection: 'users',
                         ),
