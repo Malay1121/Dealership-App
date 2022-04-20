@@ -14,6 +14,7 @@ import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:intl/intl.dart';
 
 String _sellerName = '';
 String _sellerAddress = '';
@@ -281,31 +282,34 @@ class _RegisterCheckState extends State<RegisterCheck> {
 
   Future<bool> saveFile() async {
     Directory? directory;
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(now);
     if (Platform.isAndroid) {
-      if (await _requestPermission(Permission.storage)) {
+      if (await _requestPermission(Permission.storage) &&
+          await _requestPermission(Permission.manageExternalStorage)) {
         directory = await getExternalStorageDirectory();
-        // String newPath = '';
-        // List<String> folders = directory!.path.split('/');
-        // for (int x = 1; x < folders.length; x++) {
-        //   String folder = folders[x];
-        //   if (folder != 'Android') {
-        //     newPath += '/' + folder;
-        //   } else {
-        //     break;
-        //   }
-        // }
-        // newPath = newPath + '/AgreementExports';
-        // directory = Directory(newPath);
-        // print(directory.path);
+        String newPath = '';
+        List<String> folders = directory!.path.split('/');
+        for (int x = 1; x < folders.length; x++) {
+          String folder = folders[x];
+          if (folder != 'Android') {
+            newPath += '/' + folder;
+          } else {
+            break;
+          }
+        }
+        newPath = newPath + '/AgreementExports';
+        directory = Directory(newPath);
+        print(directory.path);
       } else {
         return false;
       }
     }
     if (!await directory!.exists()) {
-      // await directory.create(recursive: true);
+      await directory.create(recursive: true);
     }
     if (await directory.exists()) {
-      final file = File("${directory.path}${numberController.text}.pdf");
+      final file = File("${directory.path}/${numberController.text}_agreement_.pdf");
       await file.writeAsBytes(await pdf.save());
       showSnackBar(context, 'You can find the PDF at' + file.path);
     }

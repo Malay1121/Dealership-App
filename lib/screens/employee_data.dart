@@ -75,7 +75,6 @@ class _EmployeDataState extends State<EmployeData> {
                       child: ListView.builder(
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          DocumentSnapshot doc = snapshots.data!.docs[index];
 
                           return DataTable2(
                             headingRowHeight: _mediaQuery.height / 17,
