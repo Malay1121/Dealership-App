@@ -28,7 +28,6 @@ final db = FirebaseFirestore.instance;
 class _EmployeDataState extends State<EmployeData> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -76,15 +75,12 @@ class _EmployeDataState extends State<EmployeData> {
                       child: ListView.builder(
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          DocumentSnapshot doc = snapshots.data!.docs[index];
-
                           return DataTable2(
                             headingRowHeight: _mediaQuery.height / 17,
                             headingTextStyle: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
                             columnSpacing: 1,
                             horizontalMargin: 12,
                             minWidth: _mediaQuery.width *
