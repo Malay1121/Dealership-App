@@ -331,13 +331,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-  linked_scroll_controller:
-    dependency: transitive
-    description:
-      name: linked_scroll_controller
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   lints:
     dependency: transitive
     description:
@@ -616,13 +609,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
-  spreadsheet_table:
-    dependency: "direct main"
-    description:
-      name: spreadsheet_table
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   stack_trace:
     dependency: transitive
     description:

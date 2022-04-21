@@ -75,7 +75,10 @@ class _EmployeDataState extends State<EmployeData> {
                       child: ListView.builder(
                         itemCount: 1,
                         itemBuilder: (context, index) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> e102b0a035d65632eda338de5c0d430209649d8c
                           return DataTable2(
                             headingRowHeight: _mediaQuery.height / 17,
                             headingTextStyle: TextStyle(

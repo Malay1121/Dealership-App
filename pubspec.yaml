@@ -42,10 +42,9 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.1.47
   firebase_storage: ^10.2.11
   image_picker: ^0.8.5
-  spreadsheet_table: ^1.0.0
   csv: ^5.0.1
-  universal_html: ^2.0.8
   permission_handler: ^9.2.0
+  universal_html: ^2.0.8
   path_provider: ^2.0.9
   open_file: ^3.2.1
   animated_splash_screen: ^1.2.0
