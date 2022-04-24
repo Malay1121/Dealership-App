@@ -206,8 +206,7 @@ class _RegisterCheckState extends State<RegisterCheck> {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(now);
     if (Platform.isAndroid) {
-      if (await _requestPermission(Permission.storage) &&
-          await _requestPermission(Permission.manageExternalStorage)) {
+      if (await _requestPermission(Permission.storage) &&  await _requestPermission(Permission.manageExternalStorage)) {
         directory = await getExternalStorageDirectory();
         String newPath = '';
         List<String> folders = directory!.path.split('/');
@@ -230,7 +229,7 @@ class _RegisterCheckState extends State<RegisterCheck> {
       await directory.create(recursive: true);
     }
     if (await directory.exists()) {
-      final file = File("${directory.path}/${numberController.text}_agreement_.pdf");
+      final file = File("${directory.path}/${numberController.text}_agreement_${formattedDate}.pdf");
       await file.writeAsBytes(await pdf.save());
       showSnackBar(context, 'You can find the PDF at' + file.path);
     }

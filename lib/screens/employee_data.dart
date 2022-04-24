@@ -7,9 +7,12 @@ import 'package:dealership/constants.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
+
+import '../main.dart';
 
 class EmployeData extends StatefulWidget {
   EmployeData({required this.collection, required this.list});
@@ -75,10 +78,6 @@ class _EmployeDataState extends State<EmployeData> {
                       child: ListView.builder(
                         itemCount: 1,
                         itemBuilder: (context, index) {
-<<<<<<< HEAD
-
-=======
->>>>>>> e102b0a035d65632eda338de5c0d430209649d8c
                           return DataTable2(
                             headingRowHeight: _mediaQuery.height / 17,
                             headingTextStyle: TextStyle(
@@ -215,10 +214,29 @@ class _EmployeDataState extends State<EmployeData> {
               '/${widget.collection}_export_$formattedDate.csv'))
           .create();
 
-      await file.writeAsString(csvData).then((value) => showSnackBar(
-          context,
-          'Find your export at ${directory!.path}' +
-              '/${widget.collection}_export_$formattedDate.csv'));
+      await file.writeAsString(csvData).then((value) {
+        showSnackBar(
+            context,
+            'Find your export at ${directory!.path}' +
+                '/${widget.collection}_export_$formattedDate.csv');
+      });
+      // .whenComplete(() async {
+      //   if (Platform.isAndroid) {
+      //     const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      //         AndroidNotificationDetails('DEALERID', 'DEALERCHANNEL',
+      //             channelDescription: 'Dealership Channel!',
+      //             priority: Priority.high,
+      //             importance: Importance.max);
+      //     const NotificationDetails platformChannelSpecifics =
+      //         NotificationDetails(android: androidPlatformChannelSpecifics);
+      //     await flutterLocalNotificationsPlugin.show(
+      //         12345,
+      //         "Document Exported!",
+      //         "Find at Folder ${file.path}",
+      //         platformChannelSpecifics,
+      //         payload: "${file.path}__XX__application/vnd.ms-excel");
+      //   }
+      // });
     }
     return false;
   }

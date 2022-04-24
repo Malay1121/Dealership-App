@@ -1,9 +1,9 @@
 import 'package:dealership/constants.dart';
+import 'package:dealership/main.dart';
 import 'package:dealership/screens/employee_data.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // getAllData(login);
     // Permission.storage.request();
+    initNotification();
   }
 
   @override

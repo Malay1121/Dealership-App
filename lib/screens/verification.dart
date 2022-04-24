@@ -143,16 +143,16 @@ class _VerificationState extends State<Verification> {
                                       width: _mediaQuery.width / 2.5,
                                       height: _mediaQuery.height / 21.3684211,
                                       child: TextField(
-                                        textAlignVertical:
-                                            TextAlignVertical.top,
+                                        textAlignVertical: TextAlignVertical.top,
                                         controller: phoneController,
+                                        keyboardType: TextInputType.phone,
                                         decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(bottom:_mediaQuery.height / 84.3684211),
                                           counterText: '',
                                           labelStyle: TextStyle(
                                             color: Colors.black,
                                             fontFamily: roboto,
-                                            fontSize: _mediaQuery.width /
-                                                26.7857142857,
+                                            fontSize: _mediaQuery.width / 26.7857142857,
                                           ),
                                           border: InputBorder.none,
                                           hintText: '',
@@ -350,6 +350,7 @@ class TextFieldsStart extends StatelessWidget {
           controller: controller,
           decoration: InputDecoration(
             border: InputBorder.none,
+            contentPadding: EdgeInsets.only(bottom:_mediaQuery.height / 84.3684211,),
             hintText: text,
             hintStyle: TextStyle(
               color: Colors.black,

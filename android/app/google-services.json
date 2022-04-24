@@ -14,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "943011554533-49f5l7e7gii83jmdjgmbonuukqm7e9l2.apps.googleusercontent.com",
+          "client_id": "943011554533-2543p2aqvqdcv853g1u56bdfvt1p3ct8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dealership",
+            "certificate_hash": "45e68db1a7a461a6ee3862ffac95eed5e5cb8ee8"
+          }
+        },
+        {
+          "client_id": "943011554533-aqmktdbrhl6rd4soet6017ulqbrs2osq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dealership",
+            "certificate_hash": "c48633742a0eec90387234b1664c24504645841d"
+          }
+        },
+        {
+          "client_id": "943011554533-rgok11cq8hr30t2jt7efahr8vv18d43p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.dealership",

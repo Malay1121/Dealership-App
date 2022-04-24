@@ -135,9 +135,7 @@ class _LoginState extends State<Login> {
                               textColor: Colors.black,
                               onTapCheck: true,
                               onTap: () async {
-                                var _sharedPreferences =
-                                    await SharedPreferences.getInstance();
-
+                                var _sharedPreferences = await SharedPreferences.getInstance();
                                 setState(() {
                                   login = true;
                                 });
@@ -147,14 +145,14 @@ class _LoginState extends State<Login> {
                                         isEqualTo: usernameController.text)
                                     .get()
                                     .then(
-                                      (value) => {
-                                        name = value.docs[0]['name'],
-                                        password = value.docs[0]['password'],
-                                        phone = value.docs[0]['phone'],
-                                        uid = value.docs[0]['uid'],
-                                        _sharedPreferences.setString(
-                                            'uid', value.docs[0]['uid']),
-                                        employee = value.docs[0]['employee'],
+                                      (value){
+                                        print("on Tap!!!");
+                                        name = value.docs[0]['name'];
+                                        password = value.docs[0]['password'];
+                                        phone = value.docs[0]['phone'];
+                                        uid = value.docs[0]['uid'];
+                                        _sharedPreferences.setString('uid', value.docs[0]['uid']);
+                                        employee = value.docs[0]['employee'];
                                       },
                                     );
                                 _sharedPreferences.setString(
@@ -168,6 +166,7 @@ class _LoginState extends State<Login> {
                                 if (usernameController.text == name) {
                                   if (passwordController.text == password) {
                                     if (employee == false) {
+                                      print("on Tap!!!");
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
