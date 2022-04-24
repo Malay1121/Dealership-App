@@ -177,8 +177,7 @@ class _EmployeDataState extends State<EmployeData> {
     String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(now);
 
     if (Platform.isAndroid) {
-      if (await _requestPermission(Permission.storage) &&
-          await _requestPermission(Permission.manageExternalStorage)) {
+      if (await _requestPermission(Permission.storage)) {
         directory = await getExternalStorageDirectory();
         String newPath = '';
         List<String> folders = directory!.path.split('/');
