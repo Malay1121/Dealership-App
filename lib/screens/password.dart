@@ -5,14 +5,14 @@ import 'package:dealership/constants.dart';
 import 'package:dealership/models/update_emplyee_model.dart';
 import 'package:dealership/models/user.dart';
 import 'package:dealership/screens/employee_home.dart';
-import 'package:dealership/screens/enter_otp.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/home_page.dart';
 import 'package:dealership/screens/login.dart';
 import 'package:dealership/screens/verification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
 
 class Password extends StatefulWidget {
   const Password({Key? key}) : super(key: key);
@@ -124,12 +124,12 @@ class _PasswordState extends State<Password> {
                                   setState(() {
                                     password = passwordController.text;
                                   });
-                                  var _sharedPreferences =
-                                      await SharedPreferences.getInstance();
-                                  _sharedPreferences.setString(
-                                      'password', passwordController.text);
-                                  _sharedPreferences.setString(
-                                      'username', usernameController.text);
+                                  storage.write(
+                                      key: 'password',
+                                      value: passwordController.text);
+                                  storage.write(
+                                      key: 'username',
+                                      value: usernameController.text);
                                   setState(() {
                                     login = false;
                                   });
@@ -176,10 +176,12 @@ class _PasswordState extends State<Password> {
                                       .then(
                                         (value) => {
                                           employee = value.docs[0]['employee'],
-                                          _sharedPreferences.setString(
-                                              'uid', value.docs[0]['uid']),
-                                          _sharedPreferences.setString(
-                                              'phone', value.docs[0]['phone']),
+                                          storage.write(
+                                              key: 'uid',
+                                              value: value.docs[0]['uid']),
+                                          storage.write(
+                                              key: 'phone',
+                                              value: value.docs[0]['phone']),
                                         },
                                       );
                                   if (employee == true) {

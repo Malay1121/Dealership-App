@@ -1,19 +1,9 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dealership/column_builder.dart';
 import 'package:dealership/constants.dart';
-import 'package:dealership/screens/employee_data.dart';
-import 'package:dealership/screens/employee_home.dart';
 import 'package:dealership/screens/get_started.dart';
-import 'package:dealership/screens/home_page.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:dealership/screens/selling_details.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 var registeration;
@@ -26,8 +16,6 @@ class RegisterCheck extends StatefulWidget {
 }
 
 TextEditingController numberController = TextEditingController();
-
-SharedPreferences _sharedPreferences = sharedPreferences;
 
 class _RegisterCheckState extends State<RegisterCheck> {
   Color getColor(Set<MaterialState> states) {
@@ -169,8 +157,6 @@ class _RegisterCheckState extends State<RegisterCheck> {
                 title: 'Proceed',
                 onTapCheck: true,
                 onTap: () async {
-                  var _sharedPreferences =
-                      await SharedPreferences.getInstance();
                   var documentId;
                   await FirebaseFirestore.instance
                       .collection('cars')

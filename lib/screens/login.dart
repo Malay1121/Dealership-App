@@ -5,7 +5,8 @@ import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/home_page.dart';
 import 'package:dealership/screens/verification.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -135,9 +136,6 @@ class _LoginState extends State<Login> {
                               textColor: Colors.black,
                               onTapCheck: true,
                               onTap: () async {
-                                var _sharedPreferences =
-                                    await SharedPreferences.getInstance();
-
                                 setState(() {
                                   login = true;
                                 });
@@ -152,18 +150,21 @@ class _LoginState extends State<Login> {
                                         password = value.docs[0]['password'],
                                         phone = value.docs[0]['phone'],
                                         uid = value.docs[0]['uid'],
-                                        _sharedPreferences.setString(
-                                            'uid', value.docs[0]['uid']),
+                                        storage.write(
+                                            key: 'uid',
+                                            value: value.docs[0]['uid']),
                                         employee = value.docs[0]['employee'],
                                       },
                                     );
-                                _sharedPreferences.setString(
-                                    'username', usernameController.text);
-                                _sharedPreferences.setString(
-                                    'password', passwordController.text);
-                                _sharedPreferences.setString(
-                                  'phone',
-                                  phone,
+                                storage.write(
+                                    key: 'username',
+                                    value: usernameController.text);
+                                storage.write(
+                                    key: 'password',
+                                    value: passwordController.text);
+                                storage.write(
+                                  key: 'phone',
+                                  value: phone,
                                 );
                                 if (usernameController.text == name) {
                                   if (passwordController.text == password) {

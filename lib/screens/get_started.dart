@@ -5,8 +5,8 @@ import 'package:dealership/screens/verification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
 import 'employee_home.dart';
 
 enum MobileVerificationState {
@@ -26,21 +26,19 @@ var _auth = FirebaseAuth.instance;
 class _GetStartedState extends State<GetStarted> {
   Future<void> shared() async {
     shared(BuildContext context) async {
-      var _sharedPreferences = await SharedPreferences.getInstance();
-
+      var _username = await storage.read(key: 'username');
       await FirebaseFirestore.instance
           .collection('users')
-          .where('name', isEqualTo: _sharedPreferences.getString('username'))
+          .where('name', isEqualTo: _username)
           .get()
           .then((value) => {
                 name = value.docs[0]['name'],
                 password = value.docs[0]['password'],
                 phone = value.docs[0]['phone'],
                 uid = value.docs[0]['uid'],
-                if (_sharedPreferences.getString('username') ==
-                    value.docs[0]['name'])
+                if (storage.read(key: 'username') == value.docs[0]['name'])
                   {
-                    if (_sharedPreferences.getString('password') ==
+                    if (storage.read(key: 'password') ==
                         value.docs[0]['password'])
                       {
                         setState(() {
@@ -169,76 +167,10 @@ class _GetStartedState extends State<GetStarted> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              // var _sharedPreferences =
-                              //     await SharedPreferences.getInstance();
-
-                              // FirebaseFirestore.instance
-                              //     .collection('users')
-                              //     .where('name',
-                              //         isEqualTo: _sharedPreferences
-                              //             .getString('username'))
-                              //     .get()
-                              //     .then((value) => {
-                              //           name = value.docs[0]['name'],
-                              //           password = value.docs[0]['password'],
-                              //           phone = value.docs[0]['phone'],
-                              //           uid = value.docs[0]['uid'],
-                              //           if (_sharedPreferences
-                              //                   .getString('username') ==
-                              //               value.docs[0]['name'])
-                              //             {
-                              //               if (_sharedPreferences
-                              //                       .getString('password') ==
-                              //                   value.docs[0]['password'])
-                              //                 {
-                              //                   setState(() {
-                              //                     employee = value.docs[0]
-                              //                                 ['employee'] ==
-                              //                             null
-                              //                         ? false
-                              //                         : value.docs[0]
-                              //                             ['employee'];
-                              //                   }),
-                              //                   Timer.run(() {
-                              //                     (_) {
-                              //                       employee == false
-                              //                           ? Navigator.push(
-                              //                               context,
-                              //                               MaterialPageRoute(
-                              //                                   builder:
-                              //                                       (context) =>
-                              //                                           HomePage()))
-                              //                           : Navigator.push(
-                              //                               context,
-                              //                               MaterialPageRoute(
-                              //                                   builder:
-                              //                                       (context) =>
-                              //                                           EmployeeHome()));
-                              //                     };
-                              //                   }),
-                              //                 }
-                              //               else
-                              //                 {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Login()));
-                              //                 }
-                              //             }
-                              //         });
-                              // await FirebaseFirestore.instance
-                              //     .collection('users')
-                              //     .where(
-                              //       'uid',
-                              //       isEqualTo:
-                              //           _sharedPreferences.getString('uid'),
-                              //     )
-                              //     .get()
-                              //     .then(
-                              //       (value) => {
-                              //         employee = value.docs[0]['employee'],
-                              //       },
-                              //     );
                             },
                             child: Text(
                               'Log in'.toUpperCase(),

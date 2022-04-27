@@ -8,7 +8,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
 
 class ProfilePic extends StatefulWidget {
   const ProfilePic({Key? key}) : super(key: key);
@@ -17,7 +18,6 @@ class ProfilePic extends StatefulWidget {
   State<ProfilePic> createState() => _ProfilePicState();
 }
 
-FirebaseStorage storage = FirebaseStorage.instance;
 var imageURL;
 
 class _ProfilePicState extends State<ProfilePic> {
@@ -86,8 +86,6 @@ class _ProfilePicState extends State<ProfilePic> {
                           GestureDetector(
                             onTap: () async {
                               _getFromGallery();
-                              var _sharedPreferences =
-                                  await SharedPreferences.getInstance();
                             },
                             child: Stack(
                               alignment: Alignment.bottomRight,
@@ -148,14 +146,10 @@ class _ProfilePicState extends State<ProfilePic> {
                             textColor: blue,
                             onTapCheck: true,
                             onTap: () async {
-                              var _sharedPreferences =
-                                  await SharedPreferences.getInstance();
-
+                              var _uid = await storage.read(key: 'uid');
                               var ref =
                                   await FirebaseStorage.instance.ref().child(
-                                        _sharedPreferences
-                                            .getString('uid')
-                                            .toString(),
+                                        _uid.toString(),
                                       );
                               ref.putFile(image!);
 

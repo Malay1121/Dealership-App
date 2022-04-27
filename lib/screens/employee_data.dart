@@ -5,7 +5,6 @@ import 'package:csv/csv.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/get_started.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -171,7 +170,6 @@ class _EmployeDataState extends State<EmployeData> {
   Future<bool> saveFile() async {
     print("Employee List --> ${employeeList}");
     Directory? directory;
-    final Dio dio = Dio();
     String csvData = ListToCsvConverter().convert(employeeList);
     DateTime now = DateTime.now();
     String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(now);

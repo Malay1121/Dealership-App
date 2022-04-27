@@ -3,9 +3,8 @@ import 'package:dealership/screens/employee_data.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sidebarx/sidebarx.dart';
+
+import '../main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,7 +24,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = SidebarXController(selectedIndex: 0);
     var _mediaQuery = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -185,13 +183,11 @@ class _HomePageState extends State<HomePage> {
                   mediaQuery: _mediaQuery,
                   text: 'Log Out',
                   onTap: () async {
-                    var _sharedPreferences =
-                        await SharedPreferences.getInstance();
                     Navigator.pop(context);
-                    _sharedPreferences.setString('username', '');
-                    _sharedPreferences.setString('password', '');
-                    _sharedPreferences.setString('uid', '');
-                    _sharedPreferences.setString('phone', '');
+                    storage.write(key: 'username', value: '');
+                    storage.write(key: 'password', value: '');
+                    storage.write(key: 'uid', value: '');
+                    storage.write(key: 'phone', value: '');
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => GetStarted()));
                   },

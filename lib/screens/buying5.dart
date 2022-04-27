@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dealership/constants.dart';
+import 'package:dealership/main.dart';
 import 'package:dealership/screens/employee_home.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/car_model.dart';
 
@@ -196,8 +196,8 @@ class _Enquiry11State extends State<Enquiry11> {
                                   textColor: blue,
                                   onTapCheck: true,
                                   onTap: () async {
-                                    var _sharedPreferences =
-                                        await SharedPreferences.getInstance();
+                                    var _uid = await storage.read(key: 'uid');
+
                                     CarModel carModel = CarModel();
 
                                     carModel.address = address;
@@ -256,16 +256,14 @@ class _Enquiry11State extends State<Enquiry11> {
                                     carModel.subTypeOfBuying = subTypeOfBuying;
                                     carModel.teamLeader = teamLeader;
                                     carModel.typeOfBuying = typeOfBuying;
-                                    carModel.seller =
-                                        _sharedPreferences.getString('uid');
+                                    carModel.seller = _uid;
                                     carModel.sell = false;
                                     carModel.uniqueId =
-                                        '${_sharedPreferences.getString('uid')}$registerationNumber';
+                                        '${_uid}$registerationNumber';
 
                                     await FirebaseFirestore.instance
                                         .collection('cars')
-                                        .doc(
-                                            '${_sharedPreferences.getString('uid')}$registerationNumber')
+                                        .doc('${_uid}$registerationNumber')
                                         .set(carModel.toMap())
                                         .then((value) => Navigator.push(
                                             context,

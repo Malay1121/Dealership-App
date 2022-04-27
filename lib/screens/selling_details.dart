@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/widgets.dart' as pw;
+
+import '../main.dart';
 
 String _buyerName = '';
 String _buyerAddress = '';
@@ -34,8 +35,6 @@ class SellingDetails extends StatefulWidget {
 }
 
 TextEditingController numberController = TextEditingController();
-
-SharedPreferences _sharedPreferences = sharedPreferences;
 
 class _SellingDetailsState extends State<SellingDetails> {
   Color getColor(Set<MaterialState> states) {
@@ -292,10 +291,8 @@ class _SellingDetailsState extends State<SellingDetails> {
                     showSnackBar(
                         context, 'Please fill all the fields to continue.');
                   } else {
-                    var _sharedPreferences =
-                        await SharedPreferences.getInstance();
+                    var _uid = await storage.read(key: 'uid');
                     var documentId;
-                    print(_sharedPreferences.getString('uid'));
                     await FirebaseFirestore.instance
                         .collection('cars')
                         .where('registerationNumber', isEqualTo: registeration)
@@ -354,10 +351,7 @@ class _SellingDetailsState extends State<SellingDetails> {
                         documentId = FirebaseFirestore.instance
                             .collection('cars')
                             .doc(value.docs[0]['uniqueId'])
-                            .update({
-                          'sell': true,
-                          'seller': _sharedPreferences.getString('uid')
-                        });
+                            .update({'sell': true, 'seller': _uid});
                       }
                     });
                   }

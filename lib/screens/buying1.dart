@@ -1,13 +1,10 @@
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/buying2.dart';
-import 'package:dealership/screens/enquiry2.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:flutter/material.dart';
 import 'package:ndialog/ndialog.dart';
-import 'package:o_popup/o_popup.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class Enquiry7 extends StatefulWidget {
   const Enquiry7({Key? key}) : super(key: key);
@@ -26,13 +23,6 @@ var _dateOfBuying;
 class _Enquiry7State extends State<Enquiry7> {
   @override
   Widget build(BuildContext context) {
-    void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-      setState(() {
-        _dateOfBuying = args.value.toString();
-      });
-      print(_dateOfBuying);
-    }
-
     var _mediaQuery = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
