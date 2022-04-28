@@ -5,7 +5,6 @@ import 'package:csv/csv.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/get_started.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
@@ -174,14 +173,12 @@ class _EmployeDataState extends State<EmployeData> {
   Future<bool> saveFile() async {
     print("Employee List --> ${employeeList}");
     Directory? directory;
-    final Dio dio = Dio();
     String csvData = ListToCsvConverter().convert(employeeList);
     DateTime now = DateTime.now();
     String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(now);
 
     if (Platform.isAndroid) {
-      if (await _requestPermission(Permission.storage) &&
-          await _requestPermission(Permission.manageExternalStorage)) {
+      if (await _requestPermission(Permission.storage)) {
         directory = await getExternalStorageDirectory();
         String newPath = '';
         List<String> folders = directory!.path.split('/');

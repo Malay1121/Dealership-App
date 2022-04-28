@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dealership/constants.dart';
+import 'package:dealership/main.dart';
 import 'package:dealership/screens/employee_data.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/home_page.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:dealership/screens/profile_pic.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sidebarx/sidebarx.dart';
 
 var profileComplete;
 
@@ -30,12 +27,12 @@ class _EmployeeHomeState extends State<EmployeeHome> {
   }
 
   checkProfile() async {
-    var _sharedPreferences = await SharedPreferences.getInstance();
+    var _uid = await storage.read(key: 'uid');
     await FirebaseFirestore.instance
         .collection('users')
         .where(
           'uid',
-          isEqualTo: _sharedPreferences.getString('uid'),
+          isEqualTo: _uid,
         )
         .get()
         .then(
@@ -56,8 +53,6 @@ class _EmployeeHomeState extends State<EmployeeHome> {
     );
   }
 
-  final _controller = SidebarXController(selectedIndex: 0);
-
   @override
   Widget build(BuildContext context) {
     var _mediaQuery = MediaQuery.of(context).size;
@@ -67,11 +62,6 @@ class _EmployeeHomeState extends State<EmployeeHome> {
             ? FloatingActionButton(
                 elevation: 0,
                 onPressed: () async {
-                  var _sharedPreferences =
-                      await SharedPreferences.getInstance();
-                  print(_sharedPreferences.getString('username'));
-                  print(_sharedPreferences.getString('password'));
-                  print(_sharedPreferences.getString('uid'));
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => OptionScreen()));
                 },
@@ -206,12 +196,10 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                     mediaQuery: _mediaQuery,
                     text: 'Log Out',
                     onTap: () async {
-                      var _sharedPreferences =
-                          await SharedPreferences.getInstance();
-                      _sharedPreferences.setString('username', '');
-                      _sharedPreferences.setString('password', '');
-                      _sharedPreferences.setString('uid', '');
-                      _sharedPreferences.setString('phone', '');
+                      storage.write(key: 'username', value: '');
+                      storage.write(key: 'password', value: '');
+                      storage.write(key: 'uid', value: '');
+                      storage.write(key: 'phone', value: '');
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -298,14 +286,7 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                         ? _mediaQuery.width / 1.5306122449
                         : _mediaQuery.width / 1.13293051,
                     child: GestureDetector(
-                      onTap: () async {
-                        var _sharedPreferences =
-                            await SharedPreferences.getInstance();
-                        print(_sharedPreferences.getString('username'));
-                        print(_sharedPreferences.getString('password'));
-                        print(_sharedPreferences.getString('phone'));
-                        print(_sharedPreferences.getString('uid'));
-                      },
+                      onTap: () async {},
                       child: profileComplete == true
                           ? Text(
                               'Please Tap on “+” to get started',

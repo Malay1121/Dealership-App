@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/calling_analysis1.dart';
-import 'package:dealership/screens/calling_analysis2.dart';
 import 'package:dealership/screens/employee_home.dart';
-import 'package:dealership/screens/home_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../main.dart';
 import 'enquiry2.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:flutter/material.dart';
@@ -279,8 +277,7 @@ class _CallingAnalysis3State extends State<CallingAnalysis3> {
                 title: 'Submit',
                 onTapCheck: true,
                 onTap: () async {
-                  var _sharedPreferences =
-                      await SharedPreferences.getInstance();
+                  var _uid = await storage.read(key: 'uid');
                   setState(() {
                     callingAnalysisModel.typeOfCustomer2 = customerType;
                     callingAnalysisModel.evaluationDoneNotBuying =
@@ -289,14 +286,12 @@ class _CallingAnalysis3State extends State<CallingAnalysis3> {
                     callingAnalysisModel.remarkFromEvaluator =
                         otherRemarkFromEvaluatorController.text;
                     callingAnalysisModel.callDone2 = callDoneController.text;
-                    callingAnalysisModel.uid =
-                        _sharedPreferences.getString('uid');
+                    callingAnalysisModel.uid = _uid;
                   });
 
                   FirebaseFirestore.instance
                       .collection('Calling Analysis')
-                      .doc(
-                          '${_sharedPreferences.getString('uid')}${callingAnalysisModel.newCarModel}')
+                      .doc('${_uid}${callingAnalysisModel.newCarModel}')
                       .set(callingAnalysisModel.toMap())
                       .then((value) => Navigator.pushReplacement(
                           context,

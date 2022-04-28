@@ -1,21 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dealership/constants.dart';
-import 'package:dealership/screens/employee_home.dart';
-import 'package:dealership/screens/get_started.dart';
-import 'package:dealership/screens/home_page.dart';
 import 'package:dealership/screens/splash_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:open_file/open_file.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 var context1;
+
+final storage = FlutterSecureStorage();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  sharedPreferences = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 

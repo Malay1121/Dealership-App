@@ -2,15 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dealership/constants.dart';
 import 'package:dealership/models/update_emplyee_model.dart';
 import 'package:dealership/screens/enquiry2.dart';
-import 'package:dealership/screens/evaluation3.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:dealership/screens/profile_details1.dart';
 import 'package:dealership/screens/profile_pic.dart';
 import 'package:dealership/screens/updated_successfully.dart';
 import 'package:flutter/material.dart';
-import 'package:o_popup/o_popup.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+import '../main.dart';
 
 class ProfileDetails2 extends StatefulWidget {
   const ProfileDetails2({Key? key}) : super(key: key);
@@ -111,36 +109,29 @@ class _ProfileDetails2State extends State<ProfileDetails2> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: _mediaQuery.width / 22.7272727273,
-                  right: _mediaQuery.width / 22.7272727273,
-                ),
-                child: Button2(
-                  mediaQuery: _mediaQuery,
-                  fill: false,
-                  title: 'Submit',
-                  onTapCheck: true,
-                  onTap: () async {
-                    var _sharedPreferences =
-                        await SharedPreferences.getInstance();
-                    FirebaseFirestore firebaseFirestore =
-                        FirebaseFirestore.instance;
+              Button2(
+                mediaQuery: _mediaQuery,
+                fill: false,
+                title: 'Submit',
+                onTapCheck: true,
+                onTap: () async {
+                  FirebaseFirestore firebaseFirestore =
+                      FirebaseFirestore.instance;
 
                     EmployeeModel employeeModel = EmployeeModel();
 
-                    employeeModel.dateOfJoining = dateOfJoiningEM;
-                    employeeModel.department = departmentEM;
-                    employeeModel.image = imageURL;
-                    employeeModel.location = locationEM;
-                    employeeModel.role = roleEM;
-                    employeeModel.salary = salaryController.text;
-                    employeeModel.fullName = fullNameEM;
-
-                    await firebaseFirestore
-                        .collection("users")
-                        .doc(_sharedPreferences.getString('uid'))
-                        .update(employeeModel.toMap());
+                  employeeModel.dateOfJoining = dateOfJoiningEM;
+                  employeeModel.department = departmentEM;
+                  employeeModel.image = imageURL;
+                  employeeModel.location = locationEM;
+                  employeeModel.role = roleEM;
+                  employeeModel.salary = salaryController.text;
+                  employeeModel.fullName = fullNameEM;
+                  var _uid = await storage.read(key: 'uid');
+                  await firebaseFirestore
+                      .collection("users")
+                      .doc(_uid)
+                      .update(employeeModel.toMap());
 
                     Navigator.pushReplacement(
                         context,
@@ -148,7 +139,7 @@ class _ProfileDetails2State extends State<ProfileDetails2> {
                             builder: (context) => UpdatedSuccessfully()));
                   },
                 ),
-              )
+              
             ],
           ),
         ),

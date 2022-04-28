@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = SidebarXController(selectedIndex: 0);
     var _mediaQuery = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -186,13 +185,11 @@ class _HomePageState extends State<HomePage> {
                   mediaQuery: _mediaQuery,
                   text: 'Log Out',
                   onTap: () async {
-                    var _sharedPreferences =
-                        await SharedPreferences.getInstance();
                     Navigator.pop(context);
-                    _sharedPreferences.setString('username', '');
-                    _sharedPreferences.setString('password', '');
-                    _sharedPreferences.setString('uid', '');
-                    _sharedPreferences.setString('phone', '');
+                    storage.write(key: 'username', value: '');
+                    storage.write(key: 'password', value: '');
+                    storage.write(key: 'uid', value: '');
+                    storage.write(key: 'phone', value: '');
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => GetStarted()));
                   },

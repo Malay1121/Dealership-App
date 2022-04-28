@@ -1,15 +1,10 @@
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/enter_otp.dart';
 import 'package:dealership/screens/get_started.dart';
-import 'package:dealership/screens/home_page.dart';
-import 'package:dealership/screens/password.dart';
 import 'package:dealership/screens/verification.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ndialog/ndialog.dart';
-import 'package:o_popup/o_popup.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddingDetails2 extends StatefulWidget {
   const AddingDetails2({Key? key}) : super(key: key);
@@ -24,13 +19,6 @@ TextEditingController locationController = TextEditingController();
 class _AddingDetails2State extends State<AddingDetails2> {
   @override
   Widget build(BuildContext context) {
-    void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-      setState(() {
-        _date = args.value.toString();
-      });
-      print(_date);
-    }
-
     var _mediaQuery = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(

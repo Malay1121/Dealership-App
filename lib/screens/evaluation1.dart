@@ -4,9 +4,7 @@ import 'package:dealership/screens/evaluation2.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:flutter/material.dart';
 import 'package:ndialog/ndialog.dart';
-import 'package:o_popup/o_popup.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class Enquiry3 extends StatefulWidget {
   const Enquiry3({Key? key}) : super(key: key);
@@ -24,13 +22,6 @@ var _dateOfEvaluation;
 class _Enquiry3State extends State<Enquiry3> {
   @override
   Widget build(BuildContext context) {
-    void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-      setState(() {
-        _dateOfEvaluation = args.value.toString();
-      });
-      print(_dateOfEvaluation);
-    }
-
     var _mediaQuery = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(

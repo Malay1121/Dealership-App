@@ -4,9 +4,9 @@ import 'package:dealership/screens/employee_home.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
+import '../main.dart';
 import 'home_page.dart';
 
 class Splash extends StatefulWidget {
@@ -19,24 +19,23 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   Future<void> shared() async {
     shared(BuildContext context) async {
+      var _username = await storage.read(key: 'username');
+      var _password = await storage.read(key: 'password');
       await Permission.storage.request();
       await Permission.manageExternalStorage.request();
-      var _sharedPreferences = await SharedPreferences.getInstance();
-
+      print(_username);
       await FirebaseFirestore.instance
           .collection('users')
-          .where('name', isEqualTo: _sharedPreferences.getString('username'))
+          .where('name', isEqualTo: _username)
           .get()
           .then((value) => {
                 name = value.docs[0]['name'],
                 password = value.docs[0]['password'],
                 phone = value.docs[0]['phone'],
                 uid = value.docs[0]['uid'],
-                if (_sharedPreferences.getString('username') ==
-                    value.docs[0]['name'])
+                if (_username == value.docs[0]['name'])
                   {
-                    if (_sharedPreferences.getString('password') ==
-                        value.docs[0]['password'])
+                    if (_password == value.docs[0]['password'])
                       {
                         setState(() {
                           employee = value.docs[0]['employee'] == null

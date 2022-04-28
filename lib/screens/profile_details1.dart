@@ -1,14 +1,10 @@
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/enquiry2.dart';
-import 'package:dealership/screens/evaluation3.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:dealership/screens/profile_details2.dart';
-import 'package:dealership/screens/profile_pic.dart';
 import 'package:flutter/material.dart';
 import 'package:ndialog/ndialog.dart';
-import 'package:o_popup/o_popup.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ProfileDetails1 extends StatefulWidget {
   const ProfileDetails1({Key? key}) : super(key: key);
