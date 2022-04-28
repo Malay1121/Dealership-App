@@ -18,6 +18,18 @@ import 'package:intl/intl.dart';
 
 import '../main.dart';
 
+String _buyerName = '';
+String _buyerAddress = '';
+String _buyerPanNumber = '';
+String _buyerAadharCard = '';
+String _buyerPhone = '';
+
+TextEditingController _nameController = TextEditingController();
+TextEditingController _addressController = TextEditingController();
+TextEditingController _panNumberController = TextEditingController();
+TextEditingController _aadharCardController = TextEditingController();
+TextEditingController _phoneController = TextEditingController();
+
 class SellingDetails extends StatefulWidget {
   SellingDetails({Key? key}) : super(key: key);
 
@@ -30,21 +42,7 @@ TextEditingController numberController = TextEditingController();
 SharedPreferences _sharedPreferences = sharedPreferences;
 
 class _SellingDetailsState extends State<SellingDetails> {
-
   final pdf = pw.Document();
-
-  String _buyerName = '';
-  String _buyerAddress = '';
-  String _buyerPanNumber = '';
-  String _buyerAadharCard = '';
-  String _buyerPhone = '';
-  
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _panNumberController = TextEditingController();
-  TextEditingController _aadharCardController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-
 
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -296,7 +294,8 @@ class _SellingDetailsState extends State<SellingDetails> {
                       _panNumberController.text == '' ||
                       _phoneController.text == '' ||
                       _nameController.text == '') {
-                    showSnackBar( context, 'Please fill all the fields to continue.');
+                    showSnackBar(
+                        context, 'Please fill all the fields to continue.');
                   } else {
                     print("click ok@!");
                     var _sharedPreferences =
@@ -312,65 +311,81 @@ class _SellingDetailsState extends State<SellingDetails> {
                         showSnackBar(context,
                             'Wrong Registeration Number. Please try again later!');
                       } else {
+                        bool error = false;
 
-                        await FirebaseFirestore.instance
-                            .collection('users')
-                            .where('uid', isEqualTo: value.docs[0]['seller'])
-                            .get()
-                            .then((buyer) {
-                              print("click buyer ok@!");
-                          setState(() {
-                            _buyerAadharCard = buyer.docs[0]['aadharCardNumber']
-                                .toString()
-                                .toUpperCase();
-                            _buyerAddress = buyer.docs[0]['location']
-                                .toString()
-                                .toUpperCase();
-                            _buyerName = buyer.docs[0]['fullName']
-                                .toString()
-                                .toUpperCase();
-                            _buyerPanNumber = buyer.docs[0]['panNumber']
-                                .toString()
-                                .toUpperCase();
-                            _buyerPhone =
-                                buyer.docs[0]['phone'].toString().toUpperCase();
+                        try {
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .where('uid', isEqualTo: value.docs[0]['seller'])
+                              .get()
+                              .then((buyer) {
+                            print("click buyer ok@!");
+                             error = false;
+                            setState(() {
+                              _buyerAadharCard = buyer.docs[0]
+                                      ['aadharCardNumber']
+                                  .toString()
+                                  .toUpperCase();
+                              _buyerAddress = buyer.docs[0]['location']
+                                  .toString()
+                                  .toUpperCase();
+                              _buyerName = buyer.docs[0]['fullName']
+                                  .toString()
+                                  .toUpperCase();
+                              _buyerPanNumber = buyer.docs[0]['panNumber']
+                                  .toString()
+                                  .toUpperCase();
+                              _buyerPhone = buyer.docs[0]['phone']
+                                  .toString()
+                                  .toUpperCase();
+                            });
+                          }).catchError((onError) {
+                            error = true;
+                            showSnackBar(context,
+                                'Please complete your profile first!');
                           });
-                        });
+                        } catch (e) {
+                          error = true;
+                          showSnackBar(context,
+                              'Please complete your profile first!');
+                        }
 
-                        pdf.addPage(pw.Page(
-                            pageFormat: PdfPageFormat.a4,
-                            build: (pw.Context context) {
-                              print("click ok@! add 1");
-                              return pw.Center(
-                                child: pw.Text(
-                                    'MOTOR VEHICLE SALE AGREEMENT\n\nTHIS AGREEMENT MADE AT :- ${value.docs[0]['dealershipName'].toString().toUpperCase()}\n\nDATE:- ${DateTime.now().toString()}\n\nBETWEEN\n\nMR. ${_nameController.text}\n\nS/0.SUNDAR LAL BHAGWANDAS GUPTA\n\nADDRESS :- ${_addressController.text}\n\nPAN NUMBER :- ${_panNumberController.text} ADDHAR CARD NUMBER ${_aadharCardController.text} MOB NO ${_phoneController.text}\n\nWHICH EXPRESSION SHALL, UNLESS IT BE REPUGNANT TO THE CONTEXT OR MEANING THEREOF, INCLUDE ‘THEIR RESPECTIVE HEIRS, EXECUTORS, ADMINISTRATORS AND ASSIGNS) OF THE ONE PART\n\nAND\n\nMR. $_buyerName\n\nS/O\n\nAddress:- $_buyerAddress\n\nPAN NUMBER:- $_buyerPanNumber ADHAR CARD NUMBER $_buyerAadharCard MOB NO $_buyerPhone\n\nHEREIN AFTER CALLED “THE BUYER” (WHICH EXPRESSION SHALL, UNLESS IT BE REPUGNANT TO THE ‘CONTEXT OR MEANING THEREOF INCLUDE HIS/HER HEIRS, EXECUTORS AND ADMINISTRATORS AND ASSIGNS) OF THE OTHER PART\n\nSELLER AND BUYER INDIVIDUALLY SHALL BE REFERRED AS PARTY AND COLLECTIVELY AS PARTIES.\n\nWHEREAS\n\nA. THE SELLER HAS THE ABSOLUTE OWNERSHIP WITH ALL RIGHTS OF OWNERSHIP AND POSSESSION WITHOUT ANY LIABILITY OF MOTOR VEHICLE REGISTRATION NUMBER ${value.docs[0]['registerationNumber'].toString().toUpperCase()} MAKE/MODEL ${value.docs[0]['makeAndModel'].toString().toUpperCase()} YEAR OF MFG ${value.docs[0]['manufactureYear'].toString().toUpperCase()} AND CHASSIS NUMBER ${value.docs[0]['chassisNumber'].toString().toUpperCase()} ENGINE NUMBER ${value.docs[0]['engineNumber'].toString().toUpperCase()} TOR VALUE CONSIDERATION AS PER MUTUAL CONSENT 8SUMG0ZE005T IN FORM OF PAYMENT BY RTGSIHNDICASH H] SELLER HAS AGREED TO SELL, CONVEY AND TRANSFERS THE VEHICLE DESCRIBED IN TO THE BUYER BY HANDING OVER ORIGINAL RC, INSURANCE, VALID PUC CERTIFICATE, ALL ORIGINAL KEYS, BANK DOCUMENTS AND ANY OTHER DOCUMENTS PERTAINING TO THE TRANSFER OF THE CAR WITH SIGNED RTO FORMS.\n\nB. THE SELLER UNDERSTANDS THAT HE TRANSFERS THE SOLE RIGHT OF OWNERSHIP OF THE MOTOR VEHICLE REFERRED IN TO THE BUYER TO BE USED AT SOLE DISCRETION OF BUYER AT HIS OR HER OWN WILL.\n\nC.THE BUYER TAKES THE FULL OWNERSHIP OF THE MOTOR VEHICLE REGISTRATION NUMBER ${value.docs[0]['registerationNumber'].toString().toUpperCase()} AND CHASSIS NUMBER ${value.docs[0]['chassisNumber'].toString().toUpperCase()} ENGINE NUMBER ${value.docs[0]['engineNumber'].toString().toUpperCase()} AND CONSENTS TO COMPLETE ALL TRANSFER FORMALITIES TO TRANSFER VEHICLE IN RTO, INSURANCE IN HIS/HER NAME ON THE EARLIEST BASIS.\n\nD.THE BUYER CONSENTS AND UNDERTAKE THAT HE HAS TAKEN THE DELIVERY'),
-                              );
-                            }));
-                        pdf.addPage(pw.Page(
-                            pageFormat: PdfPageFormat.a4,
-                            build: (pw.Context context) {
-                              print("click ok@! add 2");
-                              return pw.Center(
-                                child: pw.Text(
-                                    'OF THE CAR AND CONSENTS ‘TO BE IN POSSESSION OF ALL MATERIAL PAPERS AND DOCUMENTS PERTAINING TO THE VEHICLE.\n\nE. BUYER UNDERTAKE AND INDEMNIFY THAT ALL THE LIABILITIES/RISKS INCLUDING BUT NOT LIMITED TO ITS MAINTENANCE, INSURANCE AND CLAIM, LIADILITY OF TAXES, STATUTORY TAXES, POLICE CHALLANS, POLICE COMPLAINTS & AFTERMATH POLICE FORMALITIES, ANY LOSS, DAMAGES AND ACCIDENTS CAUSED TO ‘THE VEHICLE AND VEHICLE MISUSE OF ANY KIND FROM THE DATE AND TIME OF POSSESSION WILL BE HIS/HER SOLE RESPONSIBILITY AND THAT SELLER SHALL NOT BE HELD LIALE WHATSOEVER\n1.BUYER\'S RESPONSIBILITY:\n\n1.1 BUYER ACKNOWLEDGES THAT THE ACQUIRED VEHICLE AND RELATED DOCUMENTS HAVE BEEN DULY INSPECTED AND APPROVED BY HIM/HER AND HAVE BEEN FOUND TO HIS/HER ENTIRE SATISFACTION.\n\n1.2. BUYER ACKNOWLEDGES THAT FROM THE INSTANT THE ACQUIRED VEHICLE IS DELIVERED BY SELLER TO BUYER. BUYER IS SOLELY RESPONSIBLE AND LIABLE FOR ANY ACCIDENTS, OFFENCES OR DISPUTES REGARDING THE ACQUIRED VEHICLE, INCLUDING, BUT NOT LIMITED TO, ILLEGAL USE OF THE VEHICLE, TRAFFIC VIOLATION NOTICES, ACCIDENT•RELATED LITIGATION, PAYMENT OF RELATED TAXES, MAINTENANCE OF VALID INSURANCE AND UPDATING THE VEHICLE RECORDS WITH RELEVANT RTO.\n\n1.3. BUYER ACKNOWLEDGES THAT UNLESS PROHIBITED BY APPLICABLE LAW, ANY INSURANCE COVERAGE, LICENSE, TAGS, PLATES OR REGISTRATION MAINTAINED BY SELLER ON THE ACQUIRED VEHICLE SHALL BE CANCELED UPON DELIVERY OF THE ACQUIRED VEHICLE TO, AND THE ACCEPTANCE OF, BY BUYER.\n\n1.4. BUYER AGREES TO SUBMIT A NOTICE OF TRANSFER OF OWNERSHIP FOR THE ACQUIRED VEHICLE TO THE CONCERNED RTO AT THE EARLIEST FROM THE DELIVERY DATE. BUYER ACKNOWLEDGES HIS/HER RESPONSIBILITY TO UPDATE OWNERSHIP DETAILS WITH THE RTO.\n\n2. REPRESENTATION AND WARRANTIES: SELLER WARRANTS THAT ALL DISCLOSURES TO BUYER AND OTHER MATTERS IN CONNECTION WITH SUCH TRANSACTION ARE IN ALL RESPECTS AS REQUIRED BY, AND IN ACCORDANCE WITH, ALL.APPLICABLE LAWS AND REGULATIONS PREVAILING AT TIME OF SIGNING THIS MOTOR VEHICLE SALE AGREEMENT WITH NO MATERIAL FACTS HIDDEN IN.\n\n3.CONTINUATION OF REPRESENTATIONS AND WARRANTIES. ALL REPRESENTATIONS AND WARRANTIES CONTAINED IN THIS AGREEMENT (IF ANY) SHALL CONTINUE IN FULL FORCE AND EFFECT AFTER EXECUTION OF THIS AGREEMENT. IFEITHER PARTY LATER LEARNS THAT A WARRANTY OR REPRESENTATION THAT IT MADE IS UNTRUE, IT IS UNDER A DUTY TO PROMPTLY DISCLOSE THIS INFORMATION TO THE OTHER PARTY IN WRITING. NO REPRESENTATION OR WARRANTY CONTAINED HEREIN SHALL BE DEEMED TO HAVE BEEN WAIVED OR IMPAIRED BY ANY INVESTIGATION MADE BY OR KNOWLEDGE OF THE OTHER PARTY TO THIS AGREEMENT.'),
-                              );
-                            }));
+                        if (error == false) {
+                          pdf.addPage(pw.Page(
+                              pageFormat: PdfPageFormat.a4,
+                              build: (pw.Context context) {
+                                print("click ok@! add 1");
+                                return pw.Center(
+                                  child: pw.Text(
+                                      'MOTOR VEHICLE SALE AGREEMENT\n\nTHIS AGREEMENT MADE AT :- ${value.docs[0]['dealershipName'].toString().toUpperCase()}\n\nDATE:- ${DateTime.now().toString()}\n\nBETWEEN\n\nMR. ${_nameController.text}\n\nS/0.SUNDAR LAL BHAGWANDAS GUPTA\n\nADDRESS :- ${_addressController.text}\n\nPAN NUMBER :- ${_panNumberController.text} ADDHAR CARD NUMBER ${_aadharCardController.text} MOB NO ${_phoneController.text}\n\nWHICH EXPRESSION SHALL, UNLESS IT BE REPUGNANT TO THE CONTEXT OR MEANING THEREOF, INCLUDE ‘THEIR RESPECTIVE HEIRS, EXECUTORS, ADMINISTRATORS AND ASSIGNS) OF THE ONE PART\n\nAND\n\nMR. $_buyerName\n\nS/O\n\nAddress:- $_buyerAddress\n\nPAN NUMBER:- $_buyerPanNumber ADHAR CARD NUMBER $_buyerAadharCard MOB NO $_buyerPhone\n\nHEREIN AFTER CALLED “THE BUYER” (WHICH EXPRESSION SHALL, UNLESS IT BE REPUGNANT TO THE ‘CONTEXT OR MEANING THEREOF INCLUDE HIS/HER HEIRS, EXECUTORS AND ADMINISTRATORS AND ASSIGNS) OF THE OTHER PART\n\nSELLER AND BUYER INDIVIDUALLY SHALL BE REFERRED AS PARTY AND COLLECTIVELY AS PARTIES.\n\nWHEREAS\n\nA. THE SELLER HAS THE ABSOLUTE OWNERSHIP WITH ALL RIGHTS OF OWNERSHIP AND POSSESSION WITHOUT ANY LIABILITY OF MOTOR VEHICLE REGISTRATION NUMBER ${value.docs[0]['registerationNumber'].toString().toUpperCase()} MAKE/MODEL ${value.docs[0]['makeAndModel'].toString().toUpperCase()} YEAR OF MFG ${value.docs[0]['manufactureYear'].toString().toUpperCase()} AND CHASSIS NUMBER ${value.docs[0]['chassisNumber'].toString().toUpperCase()} ENGINE NUMBER ${value.docs[0]['engineNumber'].toString().toUpperCase()} TOR VALUE CONSIDERATION AS PER MUTUAL CONSENT 8SUMG0ZE005T IN FORM OF PAYMENT BY RTGSIHNDICASH H] SELLER HAS AGREED TO SELL, CONVEY AND TRANSFERS THE VEHICLE DESCRIBED IN TO THE BUYER BY HANDING OVER ORIGINAL RC, INSURANCE, VALID PUC CERTIFICATE, ALL ORIGINAL KEYS, BANK DOCUMENTS AND ANY OTHER DOCUMENTS PERTAINING TO THE TRANSFER OF THE CAR WITH SIGNED RTO FORMS.\n\nB. THE SELLER UNDERSTANDS THAT HE TRANSFERS THE SOLE RIGHT OF OWNERSHIP OF THE MOTOR VEHICLE REFERRED IN TO THE BUYER TO BE USED AT SOLE DISCRETION OF BUYER AT HIS OR HER OWN WILL.\n\nC.THE BUYER TAKES THE FULL OWNERSHIP OF THE MOTOR VEHICLE REGISTRATION NUMBER ${value.docs[0]['registerationNumber'].toString().toUpperCase()} AND CHASSIS NUMBER ${value.docs[0]['chassisNumber'].toString().toUpperCase()} ENGINE NUMBER ${value.docs[0]['engineNumber'].toString().toUpperCase()} AND CONSENTS TO COMPLETE ALL TRANSFER FORMALITIES TO TRANSFER VEHICLE IN RTO, INSURANCE IN HIS/HER NAME ON THE EARLIEST BASIS.\n\nD.THE BUYER CONSENTS AND UNDERTAKE THAT HE HAS TAKEN THE DELIVERY'),
+                                );
+                              }));
+                          pdf.addPage(pw.Page(
+                              pageFormat: PdfPageFormat.a4,
+                              build: (pw.Context context) {
+                                print("click ok@! add 2");
+                                return pw.Center(
+                                  child: pw.Text(
+                                      'OF THE CAR AND CONSENTS ‘TO BE IN POSSESSION OF ALL MATERIAL PAPERS AND DOCUMENTS PERTAINING TO THE VEHICLE.\n\nE. BUYER UNDERTAKE AND INDEMNIFY THAT ALL THE LIABILITIES/RISKS INCLUDING BUT NOT LIMITED TO ITS MAINTENANCE, INSURANCE AND CLAIM, LIADILITY OF TAXES, STATUTORY TAXES, POLICE CHALLANS, POLICE COMPLAINTS & AFTERMATH POLICE FORMALITIES, ANY LOSS, DAMAGES AND ACCIDENTS CAUSED TO ‘THE VEHICLE AND VEHICLE MISUSE OF ANY KIND FROM THE DATE AND TIME OF POSSESSION WILL BE HIS/HER SOLE RESPONSIBILITY AND THAT SELLER SHALL NOT BE HELD LIALE WHATSOEVER\n1.BUYER\'S RESPONSIBILITY:\n\n1.1 BUYER ACKNOWLEDGES THAT THE ACQUIRED VEHICLE AND RELATED DOCUMENTS HAVE BEEN DULY INSPECTED AND APPROVED BY HIM/HER AND HAVE BEEN FOUND TO HIS/HER ENTIRE SATISFACTION.\n\n1.2. BUYER ACKNOWLEDGES THAT FROM THE INSTANT THE ACQUIRED VEHICLE IS DELIVERED BY SELLER TO BUYER. BUYER IS SOLELY RESPONSIBLE AND LIABLE FOR ANY ACCIDENTS, OFFENCES OR DISPUTES REGARDING THE ACQUIRED VEHICLE, INCLUDING, BUT NOT LIMITED TO, ILLEGAL USE OF THE VEHICLE, TRAFFIC VIOLATION NOTICES, ACCIDENT•RELATED LITIGATION, PAYMENT OF RELATED TAXES, MAINTENANCE OF VALID INSURANCE AND UPDATING THE VEHICLE RECORDS WITH RELEVANT RTO.\n\n1.3. BUYER ACKNOWLEDGES THAT UNLESS PROHIBITED BY APPLICABLE LAW, ANY INSURANCE COVERAGE, LICENSE, TAGS, PLATES OR REGISTRATION MAINTAINED BY SELLER ON THE ACQUIRED VEHICLE SHALL BE CANCELED UPON DELIVERY OF THE ACQUIRED VEHICLE TO, AND THE ACCEPTANCE OF, BY BUYER.\n\n1.4. BUYER AGREES TO SUBMIT A NOTICE OF TRANSFER OF OWNERSHIP FOR THE ACQUIRED VEHICLE TO THE CONCERNED RTO AT THE EARLIEST FROM THE DELIVERY DATE. BUYER ACKNOWLEDGES HIS/HER RESPONSIBILITY TO UPDATE OWNERSHIP DETAILS WITH THE RTO.\n\n2. REPRESENTATION AND WARRANTIES: SELLER WARRANTS THAT ALL DISCLOSURES TO BUYER AND OTHER MATTERS IN CONNECTION WITH SUCH TRANSACTION ARE IN ALL RESPECTS AS REQUIRED BY, AND IN ACCORDANCE WITH, ALL.APPLICABLE LAWS AND REGULATIONS PREVAILING AT TIME OF SIGNING THIS MOTOR VEHICLE SALE AGREEMENT WITH NO MATERIAL FACTS HIDDEN IN.\n\n3.CONTINUATION OF REPRESENTATIONS AND WARRANTIES. ALL REPRESENTATIONS AND WARRANTIES CONTAINED IN THIS AGREEMENT (IF ANY) SHALL CONTINUE IN FULL FORCE AND EFFECT AFTER EXECUTION OF THIS AGREEMENT. IFEITHER PARTY LATER LEARNS THAT A WARRANTY OR REPRESENTATION THAT IT MADE IS UNTRUE, IT IS UNDER A DUTY TO PROMPTLY DISCLOSE THIS INFORMATION TO THE OTHER PARTY IN WRITING. NO REPRESENTATION OR WARRANTY CONTAINED HEREIN SHALL BE DEEMED TO HAVE BEEN WAIVED OR IMPAIRED BY ANY INVESTIGATION MADE BY OR KNOWLEDGE OF THE OTHER PARTY TO THIS AGREEMENT.'),
+                                );
+                              }));
 
-                        await saveFile();
-                        
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => employee == true
-                                    ? EmployeeHome()
-                                    : HomePage()));
-                        documentId = FirebaseFirestore.instance
-                            .collection('cars')
-                            .doc(value.docs[0]['uniqueId'])
-                            .update({
-                          'sell': true,
-                          'seller': _sharedPreferences.getString('uid')
-                        });
+                          await saveFile();
+
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => employee == true
+                                      ? EmployeeHome()
+                                      : HomePage()));
+                          documentId = FirebaseFirestore.instance
+                              .collection('cars')
+                              .doc(value.docs[0]['uniqueId'])
+                              .update({
+                            'sell': true,
+                            'seller': _sharedPreferences.getString('uid')
+                          });
+                        }
                       }
                     });
                   }
@@ -389,7 +404,8 @@ class _SellingDetailsState extends State<SellingDetails> {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat("MM-dd-yyyy-HH-mm-ss").format(now);
     if (Platform.isAndroid) {
-      if (await _requestPermission(Permission.storage) &&  await _requestPermission(Permission.manageExternalStorage)) {
+      if (await _requestPermission(Permission.storage) &&
+          await _requestPermission(Permission.manageExternalStorage)) {
         directory = await getExternalStorageDirectory();
         String newPath = '';
         List<String> folders = directory!.path.split('/');
@@ -412,11 +428,11 @@ class _SellingDetailsState extends State<SellingDetails> {
       await directory.create(recursive: true);
     }
     if (await directory.exists()) {
-      final file = File("${directory.path}/${numberController.text}_agreement_${formattedDate}.pdf");
-      await file.writeAsBytes(await pdf.save()).then((value){
+      final file = File(
+          "${directory.path}/${numberController.text}_agreement_${formattedDate}.pdf");
+      await file.writeAsBytes(await pdf.save()).then((value) {
         showSnackBar(context, 'You can find the PDF at' + file.path);
-      })
-      .whenComplete(() async {
+      }).whenComplete(() async {
         if (Platform.isAndroid) {
           const AndroidNotificationDetails androidPlatformChannelSpecifics =
               AndroidNotificationDetails('DEALERIDPDF', 'DEALERCHANNELPDF',
@@ -436,7 +452,6 @@ class _SellingDetailsState extends State<SellingDetails> {
     }
     return false;
   }
-
 
   Future<bool> _requestPermission(Permission permission) async {
     if (await permission.isGranted) {
