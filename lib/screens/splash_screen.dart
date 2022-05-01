@@ -24,6 +24,7 @@ class _SplashState extends State<Splash> {
       await Permission.storage.request();
       await Permission.manageExternalStorage.request();
       print(_username);
+      print(_password);
       await FirebaseFirestore.instance
           .collection('users')
           .where('name', isEqualTo: _username)

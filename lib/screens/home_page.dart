@@ -189,6 +189,7 @@ class _HomePageState extends State<HomePage> {
                     storage.write(key: 'password', value: '');
                     storage.write(key: 'uid', value: '');
                     storage.write(key: 'phone', value: '');
+
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => GetStarted()));
                   },

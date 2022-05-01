@@ -145,35 +145,42 @@ class _LoginState extends State<Login> {
                                         isEqualTo: usernameController.text)
                                     .get()
                                     .then(
-                                      (value){
-                                        print("on Tap!!!");
-                                        name = value.docs[0]['name'];
-                                        uid = value.docs[0]['uid'];
-                                        storage.write(
-                                            key: 'uid',
-                                            value: value.docs[0]['uid']);
-                                        employee = value.docs[0]['employee'];
-                                      },
+                                  (value) {
+                                    setState(() {
+                                      name = value.docs[0]['name'];
+                                      uid = value.docs[0]['uid'];
+                                      storage.write(
+                                          key: 'uid',
+                                          value: value.docs[0]['uid']);
+                                      employee = value.docs[0]['employee'];
+                                      password = value.docs[0]['password'];
+                                    });
+                                    storage.write(
+                                        value: usernameController.text,
+                                        key: 'username');
+                                    storage.write(
+                                        key: 'password',
+                                        value: passwordController.text);
+                                    storage.write(
+                                      key: 'phone',
+                                      value: phone,
                                     );
-                                storage.write(
-                                    value: usernameController.text, key: 'username');
-                                storage.write(
-                                    key: 'password',
-                                    value: passwordController.text);
-                                storage.write(
-                                  key: 'phone',
-                                  value: phone,
+                                  },
                                 );
+
                                 if (usernameController.text == name) {
                                   if (passwordController.text == password) {
                                     if (employee == false) {
-                                      print("on Tap!!!");
+                                      print(storage.read(key: 'username'));
+                                      print(storage.read(key: 'password'));
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   HomePage()));
                                     } else {
+                                      print(storage.read(key: 'username'));
+                                      print(storage.read(key: 'password'));
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

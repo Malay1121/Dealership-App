@@ -127,9 +127,7 @@ class _PasswordState extends State<Password> {
                                   storage.write(
                                       key: 'password',
                                       value: passwordController.text);
-                                  storage.write(
-                                      key: 'username',
-                                      value: usernameController.text);
+                                  storage.write(key: 'username', value: name);
                                   setState(() {
                                     login = false;
                                   });
