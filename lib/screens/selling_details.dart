@@ -12,7 +12,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 
@@ -38,8 +37,6 @@ class SellingDetails extends StatefulWidget {
 }
 
 TextEditingController numberController = TextEditingController();
-
-SharedPreferences _sharedPreferences = sharedPreferences;
 
 class _SellingDetailsState extends State<SellingDetails> {
   final pdf = pw.Document();
@@ -298,10 +295,8 @@ class _SellingDetailsState extends State<SellingDetails> {
                         context, 'Please fill all the fields to continue.');
                   } else {
                     print("click ok@!");
-                    var _sharedPreferences =
-                        await SharedPreferences.getInstance();
+                    var uid = await storage.read(key: 'uid');
                     var documentId;
-                    print(_sharedPreferences.getString('uid'));
                     await FirebaseFirestore.instance
                         .collection('cars')
                         .where('registerationNumber', isEqualTo: registeration)
@@ -320,7 +315,7 @@ class _SellingDetailsState extends State<SellingDetails> {
                               .get()
                               .then((buyer) {
                             print("click buyer ok@!");
-                             error = false;
+                            error = false;
                             setState(() {
                               _buyerAadharCard = buyer.docs[0]
                                       ['aadharCardNumber']
@@ -341,13 +336,13 @@ class _SellingDetailsState extends State<SellingDetails> {
                             });
                           }).catchError((onError) {
                             error = true;
-                            showSnackBar(context,
-                                'Please complete your profile first!');
+                            showSnackBar(
+                                context, 'Please complete your profile first!');
                           });
                         } catch (e) {
                           error = true;
-                          showSnackBar(context,
-                              'Please complete your profile first!');
+                          showSnackBar(
+                              context, 'Please complete your profile first!');
                         }
 
                         if (error == false) {
@@ -381,10 +376,7 @@ class _SellingDetailsState extends State<SellingDetails> {
                           documentId = FirebaseFirestore.instance
                               .collection('cars')
                               .doc(value.docs[0]['uniqueId'])
-                              .update({
-                            'sell': true,
-                            'seller': _sharedPreferences.getString('uid')
-                          });
+                              .update({'sell': true, 'seller': uid});
                         }
                       }
                     });

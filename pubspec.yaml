@@ -49,8 +49,10 @@ dependencies:
   image_gallery_saver: ^1.7.1
   data_table_2: ^2.2.1
   pdf: ^3.7.4
+  flutter_local_notifications: ^9.4.0
   flutter_secure_storage: ^5.0.2
   flutter_secure_storage_web: ^1.0.2
+  open_file:
 
 dev_dependencies:
   flutter_test:

@@ -5,7 +5,6 @@ import 'package:dealership/screens/verification.dart';
 import 'package:flutter/material.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddingDetails3 extends StatefulWidget {
   const AddingDetails3({Key? key}) : super(key: key);

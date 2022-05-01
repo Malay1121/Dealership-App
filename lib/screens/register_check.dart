@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dealership/constants.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:dealership/screens/selling_details.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 var registeration;
 

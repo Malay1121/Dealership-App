@@ -4,8 +4,7 @@ import 'package:dealership/screens/employee_data.dart';
 import 'package:dealership/screens/get_started.dart';
 import 'package:dealership/screens/options.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sidebarx/sidebarx.dart';
+import '../main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

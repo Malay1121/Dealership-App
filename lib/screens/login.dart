@@ -156,7 +156,7 @@ class _LoginState extends State<Login> {
                                       },
                                     );
                                 storage.write(
-                                    value: usernameController.text);
+                                    value: usernameController.text, key: 'username');
                                 storage.write(
                                     key: 'password',
                                     value: passwordController.text);
